@@ -12,8 +12,8 @@ export class Favorites extends BaseEntity {
     user!: User;
 
     @Column({type:'json'})
-    basic! : Array<{country:string, minYear:string, maxYear:string}>;
+    basic! : Array<{country:object, minYear:string, maxYear:string}>;
 
     @Column({type:'json'})
-    compare! :  Array<{country:string, minYear:string, maxYear:string}>;
+    compare! :  Array<{country:object, minYear:string, maxYear:string}>;
 }
