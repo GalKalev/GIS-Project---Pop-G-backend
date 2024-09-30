@@ -3,10 +3,7 @@ import { IUser } from "../types";
 
 // User registration requirements
 export const userSchema = yup.object().shape({
-  userId: yup
-    .string()
-    .required("User ID is required")
-    .matches(/^\d{9}$/, "ID must be exactly 9 digits"),
+
   firstName: yup
     .string()
     .required("First name is required")

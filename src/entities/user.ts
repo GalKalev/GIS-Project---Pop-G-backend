@@ -18,18 +18,13 @@ export class User extends BaseEntity {
     id!: number;
 
     @PrimaryColumn()
-    userId!: string;
-
+    email!: string;
+    
     @Column()
     firstName!: string;
 
     @Column()
     lastName!: string;
-
-    @Column({
-        unique: true,
-    })
-    email!: string;
 
     @Column()
     phone!: string;
