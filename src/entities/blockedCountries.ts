@@ -1,4 +1,4 @@
-import {Entity, PrimaryColumn, Column, BaseEntity, Generated, PrimaryGeneratedColumn, OneToOne} from 'typeorm';
+import {Entity, Column, BaseEntity, PrimaryGeneratedColumn} from 'typeorm';
 // Blocked countries table --only admin can modify the content of this table--
 
 @Entity('blockedCountries')
