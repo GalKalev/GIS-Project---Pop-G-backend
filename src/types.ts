@@ -1,13 +1,14 @@
-import { Favorites } from "./entities/favorites";
+import { BasicFavorites } from "./entities/basicFavorites";
+import { CompareFavorites } from "./entities/copareFavorites";
 
 export interface IUser {
   firstName: string;
   lastName: string;
   phone: string;
-  userId: string;
   email: string;
   password: string;
-//   favorites:Favorites;
   isAdmin:boolean;
   originCountry:string;
+  basicFavorites: BasicFavorites[],
+  compareFavorites: CompareFavorites[],
 }

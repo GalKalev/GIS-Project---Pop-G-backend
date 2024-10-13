@@ -3,15 +3,22 @@ import dotenv from "dotenv";
 import { AppDataSource } from "./services/data-source";
 import loginRouter from "./routes/login";
 import registerRouter from "./routes/register";
+import favoritesRouter from './routes/favorites'
+import cors from 'cors';
 
 
 dotenv.config();
 
 const app: Express = express();
+app.use(cors({
+    origin: '*'
+  }));
+
 app.use(express.json());
 
 app.use("/login", loginRouter);
 app.use("/register", registerRouter);
+app.use("/favorites", favoritesRouter);
 
 const port = process.env.PORT;
 

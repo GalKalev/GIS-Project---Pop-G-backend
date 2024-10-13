@@ -3,11 +3,11 @@ import {
     PrimaryColumn,
     Column,
     BaseEntity,
-    JoinColumn,
     Generated,
-    OneToOne,
+    OneToMany,
 } from "typeorm";
-import { Favorites } from "./favorites";
+import { BasicFavorites } from "./basicFavorites";
+import { CompareFavorites } from "./copareFavorites";
 
 // User table
 
@@ -19,7 +19,7 @@ export class User extends BaseEntity {
 
     @PrimaryColumn()
     email!: string;
-    
+
     @Column()
     firstName!: string;
 
@@ -35,9 +35,11 @@ export class User extends BaseEntity {
     @Column()
     isAdmin!: boolean;
 
-    @OneToOne(() => Favorites, (favorites) => favorites.user, { nullable: true })
-    @JoinColumn() // This will create a foreign key in the favorites table pointing back to user
-    favorite?: Favorites;
+    @OneToMany(() => BasicFavorites, (basicFavorites) => basicFavorites.user, { cascade: true })
+    basicEntries!: BasicFavorites[];
+
+    @OneToMany(() => CompareFavorites, (compareFavorites) => compareFavorites.user, { cascade: true })
+    compareFavorites!: CompareFavorites[];
 
     @Column()
     originCountry!: string
