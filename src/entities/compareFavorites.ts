@@ -16,6 +16,6 @@ export class CompareFavorites extends BaseEntity {
     @Column()
     maxYear!: number
 
-    @ManyToOne(() => User, (user) => user.basicEntries)
+    @ManyToOne(() => User, (user) => user.basicFavorites)
     user!: User;
 }

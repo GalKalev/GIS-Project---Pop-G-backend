@@ -4,7 +4,7 @@ import { User } from '../entities/user';
 import { BlockedCountries } from '../entities/blockedCountries';
 import { DataSource } from "typeorm";
 import { BasicFavorites } from '../entities/basicFavorites';
-import { CompareFavorites } from '../entities/copareFavorites';
+import { CompareFavorites } from '../entities/compareFavorites';
 
 const port = process.env.DB_PORT as number | undefined;
 
@@ -47,19 +47,17 @@ export async function findUserByEmail(
 
 /**
  * Returns the user basic favorites data
- * @param email 
+ * @param id 
  * @returns 
  */
 
-export async function getBasicFavorites(email: string): Promise<BasicFavorites[]| null> {
+export async function getBasicFavorites(id: number): Promise<BasicFavorites[]| null> {
   const basicFavoritesRepository = AppDataSource.getRepository(BasicFavorites);
-  // const compareFavoritesRepository = AppDataSource.getRepository(CompareFavorites);
-  const userRepository = AppDataSource.getRepository(User);
   try {
     const basicFavorites = await basicFavoritesRepository
     .createQueryBuilder("basicFavorite")  // Use 'basicFavorite' as the alias for BasicFavorites
     .innerJoin("basicFavorite.user", "user")  // Join the 'user' entity
-    .where("user.email = :email", { email })  // Match the email of the user
+    .where("user.id = :id", { id })  // Match the email of the user
     .getMany();
 
       if(basicFavorites ){
@@ -73,19 +71,17 @@ export async function getBasicFavorites(email: string): Promise<BasicFavorites[]
 
 /**
  * Returns the user compare favorites data
- * @param email 
+ * @param id 
  * @returns 
  */
 
-export async function getCompareFavorites(email: string): Promise<CompareFavorites[]| null> {
+export async function getCompareFavorites(id: number): Promise<CompareFavorites[]| null> {
   const compareFavoritesRepository = AppDataSource.getRepository(CompareFavorites);
-  // const compareFavoritesRepository = AppDataSource.getRepository(CompareFavorites);
-  const userRepository = AppDataSource.getRepository(User);
   try {
     const compareFavorites = await compareFavoritesRepository
     .createQueryBuilder("compareFavorite")  // Use 'compareFavorite' as the alias for compareFavorites
     .innerJoin("compareFavorite.user", "user")  // Join the 'user' entity
-    .where("user.email = :email", { email })  // Match the email of the user
+    .where("user.id = :id", { id })  // Match the email of the user
     .getMany();
 
       if(compareFavorites ){
@@ -97,4 +93,34 @@ export async function getCompareFavorites(email: string): Promise<CompareFavorit
   }
 }
 
+/**
+ * Updates user info in db
+ * @param email 
+ * @param firstName 
+ * @param lastName 
+ * @param phone 
+ * @param originCountry 
+ * @param id 
+ * @returns 
+ */
+export async function updateUserInfo(email:string,firstName:string, lastName:string, phone:string, originCountry:string, id:number):Promise<boolean>{
+  const userRepository = AppDataSource.getRepository(User);
+  try {
+    const updateInfo = await userRepository.createQueryBuilder("user")
+    .update(User)
+    .set({
+      email: email,
+      firstName: firstName,
+      lastName: lastName,
+      phone: phone,
+      originCountry: originCountry,
+    })
+    .where("id = :id", { id })
+    .execute();
 
+    return true
+  } catch (error) {
+    console.log("error updating user: " +error.message)
+    return false
+  }
+}

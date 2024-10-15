@@ -1,23 +1,21 @@
 import {
     Entity,
-    PrimaryColumn,
     Column,
     BaseEntity,
-    Generated,
     OneToMany,
+    PrimaryGeneratedColumn,
 } from "typeorm";
 import { BasicFavorites } from "./basicFavorites";
-import { CompareFavorites } from "./copareFavorites";
+import { CompareFavorites } from "./compareFavorites"
 
 // User table
 
 @Entity("user")
 export class User extends BaseEntity {
-    @Column()
-    @Generated("increment")
+    @PrimaryGeneratedColumn("increment")
     id!: number;
 
-    @PrimaryColumn()
+    @Column({unique:true})
     email!: string;
 
     @Column()
@@ -36,7 +34,7 @@ export class User extends BaseEntity {
     isAdmin!: boolean;
 
     @OneToMany(() => BasicFavorites, (basicFavorites) => basicFavorites.user, { cascade: true })
-    basicEntries!: BasicFavorites[];
+    basicFavorites!: BasicFavorites[];
 
     @OneToMany(() => CompareFavorites, (compareFavorites) => compareFavorites.user, { cascade: true })
     compareFavorites!: CompareFavorites[];

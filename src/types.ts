@@ -1,5 +1,5 @@
 import { BasicFavorites } from "./entities/basicFavorites";
-import { CompareFavorites } from "./entities/copareFavorites";
+import { CompareFavorites } from "./entities/compareFavorites";
 
 export interface IUser {
   firstName: string;
