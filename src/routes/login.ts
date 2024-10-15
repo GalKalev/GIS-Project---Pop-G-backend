@@ -8,9 +8,7 @@ const router = express.Router();
 // User login
 router.post("/", async (req: Request, res: Response) => {
 
-    const { email, password } = req.body;
-
-    console.log(email, password);
+    const {email, password } = req.body;
 
     const user = await findUserByEmail(email);
 
@@ -25,11 +23,10 @@ router.post("/", async (req: Request, res: Response) => {
         return res.status(401).send("Invalid Email or password.");
     }
 
-     const basicFavorites = await getBasicFavorites(email);
-     const compareFavorites = await getCompareFavorites(email);
-     console.log(basicFavorites)
+     const basicFavorites = await getBasicFavorites(user.id);
+     const compareFavorites = await getCompareFavorites(user.id);
 
-    return res.status(200).send({message:"Login successful!", isAdmin:user.isAdmin, originCountry:user.originCountry, basicFavorites, compareFavorites});
+    return res.status(200).send({message:"Login successful!", user, basicFavorites, compareFavorites});
 
 });
 
