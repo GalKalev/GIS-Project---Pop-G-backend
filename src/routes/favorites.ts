@@ -9,13 +9,13 @@ const router = express.Router();
  */
 router.post("/basic", async (req: Request, res: Response) => {
     try {
-        const { countryWBId, minYear, maxYear, id } = req.body;
+        const { country, minYear, maxYear, id } = req.body;
 
         // Check if the basic favorite already exists
         const existingEntry = await AppDataSource.createQueryBuilder(BasicFavorites, "basicFavorites")
             .innerJoin("basicFavorites.user", "user")  // Join the 'user' entity
             .where("user.id = :id", { id })  // Match the id of the user
-            .andWhere("basicFavorites.countryWBId = :countryWBId", { countryWBId })
+            .andWhere("basicFavorites.country = :country", { country })
             .andWhere("basicFavorites.minYear = :minYear", { minYear })
             .andWhere("basicFavorites.maxYear = :maxYear", { maxYear })
             .getOne();
@@ -26,7 +26,7 @@ router.post("/basic", async (req: Request, res: Response) => {
 
         // Create a new BasicFavorites entry
         const newBasicFavorite = new BasicFavorites();
-        newBasicFavorite.countryWBId = countryWBId;
+        newBasicFavorite.country = country;
         newBasicFavorite.minYear = minYear;
         newBasicFavorite.maxYear = maxYear;
         newBasicFavorite.user = id; // Establish relation
@@ -47,13 +47,13 @@ router.post("/basic", async (req: Request, res: Response) => {
  */
 router.delete("/basic", async (req: Request, res: Response) => {
     try {
-        const { countryWBId, minYear, maxYear, id } = req.query;
+        const { country, minYear, maxYear, id } = req.query;
 
         // Find the matching BasicFavorites entry using a select query
         const basicFavorite = await AppDataSource.createQueryBuilder(BasicFavorites, "basicFavorites")
             .innerJoinAndSelect("basicFavorites.user", "user")  // Join with the 'User' entity
             .where("user.id = :id", { id })  // Match the id of the user
-            .andWhere("basicFavorites.countryWBId = :countryWBId", { countryWBId })
+            .andWhere("basicFavorites.country = :country", { country })
             .andWhere("basicFavorites.minYear = :minYear", { minYear })
             .andWhere("basicFavorites.maxYear = :maxYear", { maxYear })
             .getOne();
