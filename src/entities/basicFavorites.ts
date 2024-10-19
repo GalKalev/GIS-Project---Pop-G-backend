@@ -9,7 +9,7 @@ export class BasicFavorites extends BaseEntity {
     id!: number;
 
     @Column()
-    countryWBId!: string;
+    country!: string;
 
     @Column()
     minYear!: number;
