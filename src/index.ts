@@ -6,6 +6,7 @@ import registerRouter from "./routes/register";
 import favoritesRouter from './routes/favorites'
 import userInfoRouter from './routes/userInfo'
 import adminRouter from './routes/admin'
+import statsRouter from './routes/stats'
 import cors from 'cors';
 
 
@@ -23,6 +24,7 @@ app.use("/register", registerRouter);
 app.use("/favorites", favoritesRouter);
 app.use("/userInfo", userInfoRouter)
 app.use("/admin",adminRouter)
+app.use("/stats", statsRouter)
 
 const port = process.env.PORT;
 

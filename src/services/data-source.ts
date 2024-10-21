@@ -245,3 +245,31 @@ export async function removeBlockedCountry(id: number): Promise<boolean> {
     return false
   }
 }
+
+/**
+ * Get the top basic favored country 
+ * @returns 
+ */
+export async function getTopCountries(): Promise<string | null>{
+  try {
+    const basicFavoritesRepository = AppDataSource.getRepository(BasicFavorites);
+    const topCountry = await basicFavoritesRepository
+    .createQueryBuilder('favorites')
+    .select('favorites.country', 'country')
+    .addSelect('COUNT(favorites.country)', 'count')
+    .groupBy('favorites.country')
+    .orderBy('count', 'DESC')
+    .limit(1) 
+    .getRawOne(); 
+  
+  if (topCountry) {
+    return topCountry.country; 
+  } else {
+    return 'No country found';
+  }
+
+  } catch (error) {
+    console.log("error updating user admin: " + error.message)
+    return null
+  }
+}
