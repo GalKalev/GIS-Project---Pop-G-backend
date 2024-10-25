@@ -230,7 +230,6 @@ export async function blockCountry(country: string): Promise<boolean> {
 export async function removeBlockedCountry(id: number): Promise<boolean> {
   try {
     const blockedCountriesRepository = AppDataSource.getRepository(BlockedCountries);
-    console.log(id)
     const result = await blockedCountriesRepository
       .createQueryBuilder('blockedCountries')
       .where('blockedCountries.id = :id', { id }) // Ensure 'id' is correctly referenced
@@ -250,7 +249,7 @@ export async function removeBlockedCountry(id: number): Promise<boolean> {
  * Get the top basic favored country 
  * @returns 
  */
-export async function getTopCountries(): Promise<string | null>{
+export async function getTopBasicCountries(): Promise<string | null>{
   try {
     const basicFavoritesRepository = AppDataSource.getRepository(BasicFavorites);
     const topCountry = await basicFavoritesRepository
@@ -269,7 +268,42 @@ export async function getTopCountries(): Promise<string | null>{
   }
 
   } catch (error) {
-    console.log("error updating user admin: " + error.message)
+    console.log("error fetching top basic favorites: " + error.message)
+    return null
+  }
+}
+
+
+/**
+ * Get the top compared favored countries
+ * @returns 
+ */
+export async function getTopCompareCountries(): Promise<object | null>{
+  try {
+    const compareFavoritesRepository = AppDataSource.getRepository(CompareFavorites);
+    const topCountries= await compareFavoritesRepository
+    .createQueryBuilder('favorites')
+    .select([
+        'favorites.country1 AS country1',
+        'favorites.country2 AS country2',
+        'COUNT(*) AS pairCount'
+    ])
+    .groupBy('favorites.country1')
+    .addGroupBy('favorites.country2')
+    .orderBy('pairCount', 'DESC')
+    .limit(1)  
+    .getRawOne(); 
+
+    
+  
+  if (topCountries) {
+    return {country1: topCountries.country1, country2: topCountries.country2}; 
+  } else {
+    return {message:'No country found'};
+  }
+
+  } catch (error) {
+    console.log("error fetching top compare favorites: " + error.message)
     return null
   }
 }

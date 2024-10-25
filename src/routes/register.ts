@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import { User } from "../entities/user";
-import { AppDataSource } from "../services/data-source";
+import { AppDataSource, findUserByEmail } from "../services/data-source";
 import { IUser } from "../types";
 import { validate } from "../services/validation";
 
@@ -11,6 +11,14 @@ const router = express.Router();
 router.post("/", async (req: Request, res: Response) => {
   try {
     const { password, firstName, lastName, phone, email, isAdmin, originCountry } = req.body;
+
+    const checkUser = await findUserByEmail(email);
+
+    if (checkUser) {
+        console.log("error register: Email already registered");
+        return res.status(404).send("Email already registered");
+    }
+
 
     // Validate user input
     const validationResult = await validate({

@@ -9,7 +9,10 @@ export class CompareFavorites extends BaseEntity {
     id!: number;
 
     @Column()
-    countryWBId!: string;
+    country1!: string;
+    
+    @Column()
+    country2!: string;
 
     @Column()
     minYear!: number;
