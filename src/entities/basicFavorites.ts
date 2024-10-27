@@ -12,7 +12,11 @@ export class BasicFavorites extends BaseEntity {
     country!: string;
 
     @Column()
+    WBId!: string;
+
+    @Column()
     minYear!: number;
+
     @Column()
     maxYear!: number;
 
